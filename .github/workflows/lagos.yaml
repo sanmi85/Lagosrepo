@@ -43,8 +43,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 6654654245415.dkr.ecr.us-east-2.amazonaws.com
-            docker pull 654654245415.dkr.ecr.us-east-2.amazonaws.com/lagosrepo:4
+            docker pull 654654245415.dkr.ecr.us-east-2.amazonaws.com/lagosrepo:5           
             docker stop lagosrepo || true
             docker rm lagosrepo || true
-            docker run -d --name lagosrepo -p 80:80 654654245415.dkr.ecr.us-east-2.amazonaws.com/lagosrepo:4
+            docker run -d --name lagosrepo -p 80:80 654654245415.dkr.ecr.us-east-2.amazonaws.com/lagosrepo:5
       
