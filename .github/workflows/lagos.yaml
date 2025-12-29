@@ -29,4 +29,22 @@ jobs:
 
             docker build -t $IMAGE_URL .
             docker push $IMAGE_URL
+
+
+  Deploy-ec2:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2 instance
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.HOST_IP }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 6654654245415.dkr.ecr.us-east-2.amazonaws.com
+            docker pull 654654245415.dkr.ecr.us-east-2.amazonaws.com/lagosrepo:4
+            docker stop lagosrepo || true
+            docker rm lagosrepo || true
+            docker run -d --name lagosrepo -p 80:80 654654245415.dkr.ecr.us-east-2.amazonaws.com/lagosrepo:4
       
